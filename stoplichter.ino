@@ -3,6 +3,7 @@
 */
 
 String statusCode = "u";
+int lightPos;
 
 void setup()
 {
@@ -32,7 +33,7 @@ void off()
   }
 }
 
-void rainbow(int lightPos) // 1=top; 2=middle; 3=bottom
+void broken() // 1=top; 2=middle; 3=bottom
 {
   for (int n = lightPos * 3 + 2; n < lightPos * 3 + 5; ++n) // Starting position for every light is lightPos*3+2
   {
@@ -51,33 +52,32 @@ void loop()
 
   off();
 
-  int lightSelector;
-  bool startRainbow = false;
   if (random(300) == 42)
+  bool startBroken = false;
   {
-    startRainbow = true;
+    startBroken = true;
   }
 
   if (statusCode == "u")
   {
-    lightSelector = 2;
+    lightPos = 2;
     analogWrite(8, 255);
     analogWrite(9, 110);
   }
   else if (statusCode == "o")
   {
-    lightSelector = 3;
+    lightPos = 3;
     analogWrite(12, 255);
   }
   else if (statusCode == "c")
   {
-    lightSelector = 1;
+    lightPos = 1;
     analogWrite(5, 255);
   }
 
-  if (startRainbow)
+  if (startBroken)
   {
-    rainbow(lightSelector);
+    broken();
   }
 
   delay(1000);
