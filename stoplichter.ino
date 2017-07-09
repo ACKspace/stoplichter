@@ -1,104 +1,61 @@
+/*
+ * Write this script to the Arduino
+ */
+
+String statusCode = "u";
+
 void setup()
 {
-  pinMode( 5, OUTPUT );
-  pinMode( 6, OUTPUT );
-  pinMode( 7, OUTPUT );
+  Serial1.begin(115200);
 
-  pinMode( 8, OUTPUT );
-  pinMode( 9, OUTPUT );
-  pinMode( 10, OUTPUT );
+  // top light
+  pinMode(5, OUTPUT); // red
+  pinMode(6, OUTPUT); // green
+  pinMode(7, OUTPUT); // blue
 
-  pinMode( 11, OUTPUT );
-  pinMode( 12, OUTPUT );
-  pinMode( 13, OUTPUT );
+  // middle light
+  pinMode(8, OUTPUT); // red
+  pinMode(9, OUTPUT); // green
+  pinMode(10, OUTPUT); // blue
+
+  // bottom light
+  pinMode(11, OUTPUT); // red
+  pinMode(12, OUTPUT); // green
+  pinMode(13, OUTPUT); // blue
 }
-
-#define BLINKDELAY 750
-#define ORANGEGREEN 160
-
-#define NORMALBLINK 5
-#define NORMALLIGHT 3
-#define SPECIALBLINK 8
 
 void off()
 {
-    for ( uint8_t n = 5; n < 13; ++n )
-    digitalWrite( 5, LOW );
+  for (uint8_t n = 5; n < 13; ++n)
+  {
+    digitalWrite(n, LOW);
+  }
 }
 
 void loop()
 {
-  // All off
+  String statusInput = Serial1.readString();
+
+  if (statusInput == "o" || statusInput == "c" || statusInput == "u")
+  {
+    statusCode = statusInput;
+  }
+
   off();
 
-  #ifdef NORMALBLINK
-    for ( uint8_t n = 0; n < NORMALBLINK; ++n )
-    {
-      analogWrite( 8, 255 );
-      analogWrite( 9, ORANGEGREEN );
-      delay( BLINKDELAY );
-      analogWrite( 8, 0 );
-      analogWrite( 9, 0 );
-      delay( BLINKDELAY );
-    }
-  #endif
+  if (statusCode == "u")
+  {
+    analogWrite(8, 255);
+    analogWrite(9, 110);
+  }
+  else if (statusCode == "o")
+  {
+    analogWrite(12, 255);
+  }
+  else if (statusCode == "c")
+  {
+    analogWrite(5, 255);
+  }
 
-  // All off
-  off();
-
-  #ifdef NORMALLIGHT
-    for ( uint8_t n = 0; n < NORMALLIGHT; ++n )
-    {
-      analogWrite( 5, 255 );
-      delay( 4000 );
-      analogWrite( 7, 0 );
-      analogWrite( 5, 0 );
-      analogWrite( 12, 255 );
-      delay( 8000 );
-      analogWrite( 12, 0 );
-      analogWrite( 8, 255 );
-      analogWrite( 9, ORANGEGREEN );
-  
-      delay( 3000 );
-      analogWrite( 8, 0 );
-      analogWrite( 9, 0 );
-  
-      analogWrite( 5, 255 );
-      delay( 3000 );
-      for ( uint8_t p = 0; p < 100; ++p )
-      {
-        // Pink!
-        analogWrite( 7, p );
-        delay( 20 );
-      }
-    }
-    analogWrite( 7, 0 );
-  #endif
-
-  // All off
-  off();
-
-  #ifdef SPECIALBLINK
-    uint8_t r = 255;
-    uint8_t g = ORANGEGREEN;
-    uint8_t b = 0;
-  
-    for ( uint8_t n = 0; n < SPECIALBLINK; ++n )
-    {
-      analogWrite( 8, r );
-      analogWrite( 9, g );
-      analogWrite( 10, b );
-      delay( BLINKDELAY );
-      analogWrite( 8, 0 );
-      analogWrite( 9, 0 );
-      analogWrite( 10, 0 );
-      delay( BLINKDELAY );
-  
-      r >>= 1;
-      g >>= 1;
-      b <<= 1;
-      if ( !b )
-        ++b;
-    }
-  #endif
+  delay(1000);
 }
