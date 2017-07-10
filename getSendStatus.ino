@@ -1,7 +1,7 @@
 /*
  * Write this to the ESP
  */
-/*
+
 #include <ESP8266WiFi.h>
 #include <WiFiClientSecure.h>
 
@@ -55,4 +55,3 @@ void loop()
 
   delay(10000);
 }
-*/
