@@ -52,8 +52,8 @@ void loop()
 
   off();
 
-  if (random(300) == 42)
   bool startBroken = false;
+  if (random(300) == 42)
   {
     startBroken = true;
   }
@@ -78,7 +78,10 @@ void loop()
   if (startBroken)
   {
     broken();
+    delay(200);
   }
-
-  delay(1000);
+  else
+  {
+    delay(1000);
+  }
 }
